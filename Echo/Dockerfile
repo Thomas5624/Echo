@@ -19,5 +19,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Esponi la porta usata da Flask
 EXPOSE 8080
 
-# Avvia l'app
-CMD ["python", "backend.py"]
+# Avvia l'app con Gunicorn (modifica qui)
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "backend:app"]
