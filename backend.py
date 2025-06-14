@@ -229,6 +229,7 @@ def get_duration(video_id):
             'quiet': True,
             'skip_download': True,
             'forcejson': True,
+            'cookiefile': './cookies.txt',  # AGGIUNTA QUESTA RIGA
         }
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -245,7 +246,6 @@ def get_duration(video_id):
         print("Errore nel backend:", str(e))
         return jsonify({'error': str(e), 'duration': None}), 200
     
-
 
 @app.route('/proxy-thumbnail')
 def proxy_thumbnail():
@@ -271,7 +271,7 @@ def proxy_thumbnail():
 @app.route('/download/<video_id>.mp3')
 def download_mp3(video_id):
     try:
-        ydl_opts = {
+        ydl_opts_base = { # Rinominato a ydl_opts_base per chiarezza, poi modificato nella nested function
             'format': 'bestaudio/best',
             'quiet': True,
             'noplaylist': True,
@@ -287,9 +287,12 @@ def download_mp3(video_id):
             ],
             'prefer_ffmpeg': True,
             'ffmpeg_location': 'ffmpeg',  # assicurati che ffmpeg sia nel PATH
+            'cookiefile': './cookies.txt', # AGGIUNTA QUESTA RIGA
         }
 
         def generate():
+            # Clona le opzioni di base per evitare modifiche tra le chiamate
+            ydl_opts = ydl_opts_base.copy() 
 
             with YoutubeDL(ydl_opts) as ydl:
 
@@ -324,7 +327,8 @@ def download_mp3(video_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-    return stream_audio(output_path)
+    # Questa riga era fuori posto e causava un errore, l'ho commentata/rimossa perché non raggiungibile
+    # return stream_audio(output_path)
 
 def stream_audio(path):
     range_header = request.headers.get('Range', None)
@@ -366,4 +370,3 @@ def dominant_color():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8080))
     app.run(host='0.0.0.0', port=port)
-    
