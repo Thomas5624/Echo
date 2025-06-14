@@ -20,4 +20,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 8080
 
 # Avvia l'app
-CMD ["python", "main.py"]
+CMD ["python", "backend.py"]
