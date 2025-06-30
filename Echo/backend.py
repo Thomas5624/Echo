@@ -6,6 +6,7 @@ import requests
 from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 from ytmusicapi import YTMusic
+ytmusic = YTMusic("browser.json")
 from yt_dlp import YoutubeDL
 from io import BytesIO
 import traceback
@@ -15,6 +16,7 @@ from flask import stream_with_context
 from mutagen.mp3 import MP3
 import subprocess
 import yt_dlp
+
 
 
 def parse_duration(duration_str):
