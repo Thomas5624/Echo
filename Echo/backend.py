@@ -40,8 +40,6 @@ def parse_duration(duration_str):
 app = Flask(__name__)
 CORS(app)
 
-ytmusic = YTMusic()
-
 BACKEND_URL = "http://localhost:3001"
 DOWNLOAD_FOLDER = os.path.join(os.getcwd(), "static")
 os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)
